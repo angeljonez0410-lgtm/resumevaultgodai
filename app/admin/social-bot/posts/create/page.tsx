@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getSupabaseBrowser } from "@/lib/supabase-browser";
 import { useEffect, useState } from "react";
 
 export default function CreatePostPage() {
@@ -11,14 +10,9 @@ export default function CreatePostPage() {
   const [platforms, setPlatforms] = useState<string[]>([]);
 
   useEffect(() => {
-    const supabase = getSupabaseBrowser();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session?.user?.email) {
-        router.push("/admin/login");
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    if (!localStorage.getItem("sb_access_token")) {
+      router.push("/admin/login");
+    }
   }, [router]);
 
   const togglePlatform = (platform: string) => {

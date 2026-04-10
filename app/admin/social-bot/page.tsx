@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
-import { getSupabaseBrowser } from "../../../lib/supabase-browser";
 import { useRouter } from "next/navigation";
 import CreatePostForm from "../../../components/CreatePostForm";
 import PostsTable from "../../../components/PostsTable";
@@ -36,17 +35,29 @@ export default function SocialBotPage() {
 
   useEffect(() => {
     async function checkUser() {
-      const supabase = getSupabaseBrowser();
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
+      const storedUser = localStorage.getItem("sb_user");
+      const accessToken = localStorage.getItem("sb_access_token");
 
-      if (!user) {
+      if (!storedUser || !accessToken) {
         router.push("/admin/login");
         return;
       }
 
-      setEmail(user.email || "");
+      // Verify token is still valid server-side
+      const res = await fetch("/api/auth/me", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      const data = await res.json();
+
+      if (!data.user) {
+        localStorage.removeItem("sb_user");
+        localStorage.removeItem("sb_access_token");
+        localStorage.removeItem("sb_refresh_token");
+        router.push("/admin/login");
+        return;
+      }
+
+      setEmail(data.user.email || "");
       await loadData();
     }
 
@@ -77,8 +88,9 @@ export default function SocialBotPage() {
   }
 
   async function logout() {
-    const supabase = getSupabaseBrowser();
-    await supabase.auth.signOut();
+    localStorage.removeItem("sb_user");
+    localStorage.removeItem("sb_access_token");
+    localStorage.removeItem("sb_refresh_token");
     router.push("/admin/login");
   }
 

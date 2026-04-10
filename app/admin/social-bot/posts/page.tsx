@@ -2,21 +2,15 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getSupabaseBrowser } from "@/lib/supabase-browser";
 import { useEffect } from "react";
 
 export default function PostsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const supabase = getSupabaseBrowser();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session?.user?.email) {
-        router.push("/admin/login");
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    if (!localStorage.getItem("sb_access_token")) {
+      router.push("/admin/login");
+    }
   }, [router]);
 
   return (

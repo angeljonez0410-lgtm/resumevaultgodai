@@ -17,9 +17,9 @@ export async function GET(req: NextRequest) {
       source: "external-cron",
       ...result,
     });
-  } catch {
+  } catch (e: unknown) {
     return NextResponse.json(
-      { error: "Failed to run scheduled publishing" },
+      { error: "Failed to run scheduled publishing", detail: e instanceof Error ? e.message : String(e) },
       { status: 500 }
     );
   }

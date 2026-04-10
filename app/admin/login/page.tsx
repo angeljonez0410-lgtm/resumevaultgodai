@@ -1,5 +1,7 @@
 import LoginForm from "../../../components/LoginForm";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminLoginPage() {
   return (
     <main className="min-h-screen bg-gray-100 flex items-center justify-center p-6">

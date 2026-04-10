@@ -2,7 +2,7 @@ create extension if not exists "pgcrypto";
 
 create table if not exists social_posts (
   id uuid primary key default gen_random_uuid(),
-  platform text not null check (platform in ('instagram', 'twitter', 'linkedin', 'tiktok')),
+  platform text not null check (platform in ('instagram', 'twitter', 'linkedin', 'tiktok', 'reddit', 'threads')),
   topic text not null,
   prompt text,
   caption text,

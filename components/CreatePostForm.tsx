@@ -205,6 +205,8 @@ export default function CreatePostForm({
             <option value="twitter">Twitter/X</option>
             <option value="linkedin">LinkedIn</option>
             <option value="tiktok">TikTok</option>
+            <option value="reddit">Reddit</option>
+            <option value="threads">Threads</option>
           </select>
         </div>
 

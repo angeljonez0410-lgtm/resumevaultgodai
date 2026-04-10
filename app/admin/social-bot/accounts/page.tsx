@@ -54,6 +54,22 @@ const platforms = [
     icon: "♪",
     description: "Short-form video content",
   },
+  {
+    id: "reddit",
+    name: "Reddit",
+    color: "bg-orange-600",
+    hoverColor: "hover:bg-orange-700",
+    icon: "🤖",
+    description: "Community posts and discussions",
+  },
+  {
+    id: "threads",
+    name: "Threads",
+    color: "bg-black",
+    hoverColor: "hover:bg-gray-800",
+    icon: "@",
+    description: "Text-based conversations",
+  },
 ];
 
 export default function AccountsPage() {

@@ -37,6 +37,8 @@ export default function AddAccountPage() {
             <option value="instagram">Instagram</option>
             <option value="linkedin">LinkedIn</option>
             <option value="tiktok">TikTok</option>
+            <option value="reddit">Reddit</option>
+            <option value="threads">Threads</option>
           </select>
 
           <button className="btn-primary w-full">Connect Account</button>

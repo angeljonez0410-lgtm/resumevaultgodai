@@ -48,6 +48,26 @@ async function publishToTikTok(post: any): Promise<PublishResult> {
   };
 }
 
+async function publishToReddit(post: any): Promise<PublishResult> {
+  const finalCaption = formatCaptionForPlatform(post);
+
+  return {
+    success: true,
+    externalPostId: `reddit_${post.id}`,
+    finalCaption,
+  };
+}
+
+async function publishToThreads(post: any): Promise<PublishResult> {
+  const finalCaption = formatCaptionForPlatform(post);
+
+  return {
+    success: true,
+    externalPostId: `threads_${post.id}`,
+    finalCaption,
+  };
+}
+
 async function publishPost(post: any): Promise<PublishResult> {
   switch (post.platform) {
     case "instagram":
@@ -58,6 +78,10 @@ async function publishPost(post: any): Promise<PublishResult> {
       return publishToLinkedIn(post);
     case "tiktok":
       return publishToTikTok(post);
+    case "reddit":
+      return publishToReddit(post);
+    case "threads":
+      return publishToThreads(post);
     default:
       return {
         success: false,

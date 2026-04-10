@@ -135,7 +135,7 @@ RULES:
 - You can include multiple actions in one response.
 - Always explain what you did after taking an action.
 - For scheduled posts, use ISO 8601 datetime format.
-- Platforms: instagram, twitter, linkedin, tiktok
+- Platforms: instagram, twitter, linkedin, tiktok, reddit, threads
 - Statuses: draft, scheduled, posted, failed`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [

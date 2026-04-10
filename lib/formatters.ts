@@ -57,6 +57,9 @@ export function formatCaptionForPlatform(post: {
       return formatLinkedInCaption(post);
     case "tiktok":
       return formatTikTokCaption(post);
+    case "reddit":
+    case "threads":
+      return post.caption?.trim() || post.topic;
     default:
       return post.caption?.trim() || post.topic;
   }

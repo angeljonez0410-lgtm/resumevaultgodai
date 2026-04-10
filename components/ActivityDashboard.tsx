@@ -16,6 +16,8 @@ const platformStyles: Record<string, { icon: string; color: string }> = {
   twitter: { icon: "𝕏", color: "bg-black" },
   linkedin: { icon: "in", color: "bg-blue-700" },
   tiktok: { icon: "♪", color: "bg-gray-900" },
+  reddit: { icon: "🤖", color: "bg-orange-600" },
+  threads: { icon: "@", color: "bg-black" },
   system: { icon: "⚙️", color: "bg-gray-500" },
 };
 

@@ -31,46 +31,27 @@ export async function POST(req: NextRequest) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.metadata?.user_id;
-      const plan = session.metadata?.plan;
+      const creditsToAdd = parseInt(session.metadata?.credits || "0", 10);
 
-      if (userId && plan) {
-        const tier = plan.startsWith("elite") ? "elite" : "pro";
+      if (userId && creditsToAdd > 0) {
+        // Get current credits
+        const { data: profile } = await sb
+          .from("user_profiles")
+          .select("credits")
+          .eq("user_id", userId)
+          .single();
+
+        const currentCredits = profile?.credits || 0;
+
         await sb.from("user_profiles").upsert(
           {
             user_id: userId,
-            subscription_tier: tier,
+            credits: currentCredits + creditsToAdd,
             stripe_customer_id: session.customer as string,
-            subscription_status: "active",
           },
           { onConflict: "user_id" }
         );
       }
-      break;
-    }
-
-    case "customer.subscription.updated": {
-      const sub = event.data.object as Stripe.Subscription;
-      const customerId = sub.customer as string;
-      const status = sub.status;
-
-      await sb
-        .from("user_profiles")
-        .update({ subscription_status: status })
-        .eq("stripe_customer_id", customerId);
-      break;
-    }
-
-    case "customer.subscription.deleted": {
-      const sub = event.data.object as Stripe.Subscription;
-      const customerId = sub.customer as string;
-
-      await sb
-        .from("user_profiles")
-        .update({
-          subscription_tier: "free",
-          subscription_status: "canceled",
-        })
-        .eq("stripe_customer_id", customerId);
       break;
     }
   }

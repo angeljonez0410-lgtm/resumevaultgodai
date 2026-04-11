@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Search, FileText, Mail, Send, User,
   X, Sparkles, ChevronRight, Mic, DollarSign, Map, Lightbulb,
   Zap, CreditCard, Briefcase, MessageSquare, TrendingUp,
-  ArrowLeft, LogOut, Menu
+  ArrowLeft, LogOut, Menu, Users, Bot, Shield
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -30,6 +30,11 @@ const PREMIUM_NAV = [
   { name: "Salary Negotiation", path: "/app/salary-negotiation", icon: DollarSign },
   { name: "Career Roadmap", path: "/app/career-roadmap", icon: Map },
   { name: "Portfolio Ideas", path: "/app/portfolio-ideas", icon: Lightbulb },
+];
+
+const ADMIN_NAV = [
+  { name: "Admin Users", path: "/app/admin-users", icon: Users },
+  { name: "Admin AI Assistant", path: "/app/admin-ai", icon: Bot },
 ];
 
 const BOTTOM_TABS = [
@@ -157,6 +162,34 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   className="w-3 h-3 ml-auto"
                   style={active ? { color: "#1e2d42", opacity: 0.7 } : { color: "#f4c542", opacity: 0.7 }}
                 />
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Admin Nav */}
+        <div className="px-4 pb-2">
+          <p className="text-[10px] uppercase tracking-[0.15em] font-semibold text-white/60 px-4 mb-2 flex items-center gap-1.5">
+            <Shield className="w-3 h-3" style={{ color: "#f4c542" }} /> Admin
+          </p>
+          {ADMIN_NAV.map((item) => {
+            const active = isActive(item.path);
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 mb-0.5 ${
+                  active ? "shadow-lg" : "hover:bg-[#2a3f5f]"
+                }`}
+                style={active ? { backgroundColor: "#f4c542", color: "#1e2d42" } : { color: "#f4c542" }}
+              >
+                <Icon
+                  className="w-[18px] h-[18px]"
+                  style={active ? { color: "#1e2d42" } : { color: "#f4c542" }}
+                />
+                <span>{item.name}</span>
               </Link>
             );
           })}

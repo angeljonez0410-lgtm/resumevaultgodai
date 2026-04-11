@@ -10,13 +10,30 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     async function handleAuth() {
       try {
-        // Parse tokens from URL hash (Supabase magic link puts them there)
+        // Parse tokens from URL hash (Supabase magic link / OAuth puts them there)
         const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const access_token = params.get("access_token");
-        const refresh_token = params.get("refresh_token");
+        const hashParams = new URLSearchParams(hash);
+        // Also check query params (some OAuth flows use query params)
+        const queryParams = new URLSearchParams(window.location.search);
+
+        const access_token = hashParams.get("access_token") || queryParams.get("access_token");
+        const refresh_token = hashParams.get("refresh_token") || queryParams.get("refresh_token");
 
         if (!access_token) {
+          // For Google OAuth, Supabase may handle session via cookies
+          // Try using the Supabase client to get the session
+          const { getSupabaseBrowser } = await import("@/lib/supabase-browser");
+          const supabase = getSupabaseBrowser();
+          const { data: { session } } = await supabase.auth.getSession();
+          
+          if (session) {
+            localStorage.setItem("sb_access_token", session.access_token);
+            localStorage.setItem("sb_refresh_token", session.refresh_token);
+            localStorage.setItem("sb_user", JSON.stringify({ email: session.user.email, id: session.user.id }));
+            router.replace("/app");
+            return;
+          }
+
           setStatus("No auth token found. Please try logging in again.");
           return;
         }

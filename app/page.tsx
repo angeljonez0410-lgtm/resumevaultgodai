@@ -18,7 +18,7 @@ export default function HomePage() {
             AI-powered resume builder, job analyzer, cover letter generator, and interview coach — everything you need to land your dream job.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/admin/login" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-8 py-3.5 rounded-xl text-lg flex items-center gap-2 transition shadow-lg">
+            <Link href="/login" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-8 py-3.5 rounded-xl text-lg flex items-center gap-2 transition shadow-lg">
               <Sparkles className="w-5 h-5" /> Get Started Free
             </Link>
             <Link href="/app" className="text-white/80 hover:text-white font-medium flex items-center gap-1 transition">

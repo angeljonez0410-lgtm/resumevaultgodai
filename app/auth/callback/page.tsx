@@ -40,7 +40,7 @@ export default function AuthCallbackPage() {
         localStorage.setItem("sb_refresh_token", data.refresh_token);
         localStorage.setItem("sb_user", JSON.stringify(data.user));
 
-        router.replace("/admin/social-bot");
+        router.replace("/app");
       } catch {
         setStatus("Something went wrong. Please try logging in again.");
       }

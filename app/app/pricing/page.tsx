@@ -1,8 +1,14 @@
 "use client";
 
-import { Zap, Check, Star, Crown } from "lucide-react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { authFetch } from "@/lib/auth-fetch";
+import { Zap, Check, Star, Crown, Loader2 } from "lucide-react";
 
-const plans = [
+const plans: Array<{
+  name: string; price: string; period: string; desc: string;
+  features: string[]; cta: string; featured: boolean; stripePrice: string | null;
+}> = [
   {
     name: "Free",
     price: "$0",
@@ -11,6 +17,7 @@ const plans = [
     features: ["Job Analyzer", "Resume Builder", "Cover Letter Generator", "Follow-Up Emails", "5 AI generations/month"],
     cta: "Current Plan",
     featured: false,
+    stripePrice: null,
   },
   {
     name: "Pro",
@@ -29,6 +36,7 @@ const plans = [
     ],
     cta: "Upgrade to Pro",
     featured: true,
+    stripePrice: "pro_monthly",
   },
   {
     name: "Elite",
@@ -46,6 +54,7 @@ const plans = [
     ],
     cta: "Go Elite",
     featured: false,
+    stripePrice: "elite_monthly",
   },
 ];
 
@@ -57,7 +66,49 @@ const testimonials = [
 
 export default function PricingPage() {
   return (
+    <Suspense>
+      <PricingContent />
+    </Suspense>
+  );
+}
+
+function PricingContent() {
+  const searchParams = useSearchParams();
+  const success = searchParams.get("success");
+  const canceled = searchParams.get("canceled");
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const handleCheckout = async (stripePrice: string | null) => {
+    if (!stripePrice) return;
+    setLoadingPlan(stripePrice);
+    try {
+      const res = await authFetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId: stripePrice }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.open(data.url, "_self");
+      }
+    } catch { /* ignore */ }
+    setLoadingPlan(null);
+  };
+
+  return (
     <div>
+      {/* Success/Cancel banners */}
+      {success && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 text-center">
+          <p className="text-emerald-800 font-semibold">🎉 Welcome to your new plan! Your premium features are now active.</p>
+        </div>
+      )}
+      {canceled && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 text-center">
+          <p className="text-amber-800">Checkout was canceled. No charges were made.</p>
+        </div>
+      )}
+
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-1.5 bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold mb-4">
@@ -109,7 +160,9 @@ export default function PricingPage() {
               ))}
             </ul>
             <button
-              className={`w-full py-2.5 rounded-xl font-semibold text-sm transition ${
+              onClick={() => handleCheckout(plan.stripePrice)}
+              disabled={!plan.stripePrice || loadingPlan === plan.stripePrice}
+              className={`w-full py-2.5 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2 ${
                 plan.featured
                   ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600"
                   : plan.name === "Free"
@@ -117,7 +170,11 @@ export default function PricingPage() {
                   : "bg-slate-900 text-white hover:bg-slate-800"
               }`}
             >
-              {plan.cta}
+              {loadingPlan === plan.stripePrice ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting to Stripe...</>
+              ) : (
+                plan.cta
+              )}
             </button>
           </div>
         ))}

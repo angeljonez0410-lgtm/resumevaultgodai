@@ -1,4 +1,5 @@
 import AppShell from "@/components/AppShell";
+import AIAssistant from "@/components/AIAssistant";
 
 export const metadata = {
   title: "ResumeVault GodAI",
@@ -6,5 +7,10 @@ export const metadata = {
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  return <AppShell>{children}</AppShell>;
+  return (
+    <AppShell>
+      {children}
+      <AIAssistant />
+    </AppShell>
+  );
 }

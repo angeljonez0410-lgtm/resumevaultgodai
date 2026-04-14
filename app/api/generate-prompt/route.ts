@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getAuthUser, unauthorized } from "@/lib/auth";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 const modeInstructions: Record<string, string> = {
   image:
     "Generate one premium AI image prompt for a photorealistic AI influencer. Include subject, outfit, scene, lighting, camera, composition, mood, and a short negative prompt.",
@@ -28,6 +26,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 });
     }
 
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const instruction = modeInstructions[mode] || modeInstructions.image;
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",

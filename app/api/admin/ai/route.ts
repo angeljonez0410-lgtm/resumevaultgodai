@@ -39,6 +39,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Message required" }, { status: 400 });
     }
 
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 });
+    }
+
     // Fetch platform stats for context
     const sb = getSupabaseAdmin();
     const { count: userCount } = await sb.from("user_profiles").select("*", { count: "exact", head: true });

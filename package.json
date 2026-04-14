@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc -p ./tsconfig.json"
+    "typecheck": "tsc -p ./tsconfig.json --incremental false"
   },
   "dependencies": {
     "@base44/sdk": "^0.8.26",

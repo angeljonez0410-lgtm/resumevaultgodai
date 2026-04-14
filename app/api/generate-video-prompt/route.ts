@@ -27,16 +27,17 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     const brandVoice = settings?.brand_voice || "Professional, empowering, premium";
-    const targetAudience = settings?.target_audience || "Job seekers and professionals";
+    const targetAudience = settings?.target_audience || "job seekers, career changers, and ambitious professionals";
 
     const prompt = `
 You are a premium video ad creative strategist.
 
-Generate one photorealistic short-form vertical video prompt for ResumeVault.
+Generate one photorealistic short-form vertical video prompt for ResumeVaultGod.com.
 
-Brand: ResumeVault
+Brand: ResumeVaultGod.com
+Website: https://resumevaultgod.com/
 Topic: ${topic}
-Visual style preset: ${visualStyle || "Premium SaaS Ad"}
+Visual style preset: ${visualStyle || "ResumeVaultGod AI Career Brand"}
 Brand voice: ${brandVoice}
 Target audience: ${targetAudience}
 
@@ -59,6 +60,8 @@ The concept should include:
 - lighting
 - product/app usage moment if relevant
 - ending CTA visual
+- clear tie-in to AI resumes, ATS optimization, interview prep, cover letters, or application tracking
+- CTA to visit ResumeVaultGod.com
 
 Output in this exact format:
 

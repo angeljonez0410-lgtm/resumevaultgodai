@@ -27,16 +27,17 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     const brandVoice = settings?.brand_voice || "Professional, empowering, premium";
-    const targetAudience = settings?.target_audience || "Job seekers and professionals";
+    const targetAudience = settings?.target_audience || "job seekers, career changers, and ambitious professionals";
 
     const prompt = `
 You are a world-class creative director for premium SaaS ad campaigns.
 
-Generate one ultra-realistic AI image prompt for ResumeVault.
+Generate one ultra-realistic AI image prompt for ResumeVaultGod.com.
 
-Brand: ResumeVault
+Brand: ResumeVaultGod.com
+Website: https://resumevaultgod.com/
 Topic: ${topic}
-Visual style preset: ${visualStyle || "Premium SaaS Ad"}
+Visual style preset: ${visualStyle || "ResumeVaultGod AI Career Brand"}
 Brand voice: ${brandVoice}
 Target audience: ${targetAudience}
 
@@ -50,17 +51,16 @@ The image must feel like:
 - modern
 - no stock-photo look
 
-The image should be tied to ResumeVault and career growth themes:
-- resumes
-- job applications
-- interview prep
-- recruiters
-- LinkedIn
-- professionals using laptops/phones
-- dashboard/product usage moments
+The image should be tied to ResumeVaultGod.com and career growth themes:
+- AI resume builder
+- ATS optimization and resume score improvement
+- cover letters and job applications
+- interview prep and recruiter callbacks
+- professionals using laptops or phones
+- polished dashboard/product usage moments
 - clean office or home office scenes
-- diverse professionals
-- authentic expressions
+- diverse professionals with authentic confidence
+- subtle "God Mode your job search" energy without cheesy fantasy imagery
 
 Output in this exact format:
 

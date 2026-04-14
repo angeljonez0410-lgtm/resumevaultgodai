@@ -27,25 +27,28 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     const brandVoice = settings?.brand_voice || "Professional, helpful, empowering";
-    const targetAudience = settings?.target_audience || "Job seekers";
+    const targetAudience = settings?.target_audience || "job seekers, career changers, and professionals who want better resumes";
     const postFrequency = settings?.post_frequency || "daily";
 
     const prompt = `
-You are writing a high-performing social media caption for ResumeVault.
+You are writing a high-performing social media caption for ResumeVaultGod.com.
 
 Topic: ${topic}
+Website: https://resumevaultgod.com/
+Core offer: AI resume builder, ATS optimization, cover letters, interview prep, application tracking, and career-growth tools.
 Brand voice: ${brandVoice}
 Target audience: ${targetAudience}
 Post frequency style: ${postFrequency}
 
 Write one engaging caption with:
 - a strong hook
-- useful advice
+- useful career advice tied to ResumeVaultGod.com
 - short paragraphs
 - a call to action
 - relevant hashtags
 
-Keep it platform-neutral and ready for Instagram, LinkedIn, or Twitter.
+Keep it platform-neutral and ready for Instagram, LinkedIn, TikTok, Threads, or Twitter/X.
+Do not mention unrelated brands. Make the CTA point people to ResumeVaultGod.com.
 `;
 
     const completion = await openai.chat.completions.create({

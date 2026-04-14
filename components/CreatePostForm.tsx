@@ -9,14 +9,14 @@ export default function CreatePostForm({
   onCreated: () => Promise<void>;
 }) {
   const [platform, setPlatform] = useState("instagram");
-  const [topic, setTopic] = useState("");
+  const [topic, setTopic] = useState("ResumeVaultGod.com AI resume builder");
   const [caption, setCaption] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [status, setStatus] = useState("draft");
   const [scheduledTime, setScheduledTime] = useState("");
   const [visualPrompt, setVisualPrompt] = useState("");
   const [videoPrompt, setVideoPrompt] = useState("");
-  const [visualStyle, setVisualStyle] = useState("Premium SaaS Ad");
+  const [visualStyle, setVisualStyle] = useState("ResumeVaultGod AI Career Brand");
   const [message, setMessage] = useState("");
   const [loadingCaption, setLoadingCaption] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
@@ -37,7 +37,7 @@ export default function CreatePostForm({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ topic }),
+      body: JSON.stringify({ topic, platform }),
     });
 
     const data = await res.json();
@@ -67,7 +67,10 @@ export default function CreatePostForm({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ topic }),
+      body: JSON.stringify({
+        prompt: `Premium social media visual for ResumeVaultGod.com about: ${topic}. Show career growth, AI-powered resume building, job search confidence, and a modern product feel.`,
+        characterDescription: "ResumeVaultGod.com is an AI-powered career platform for resume building, job applications, interview preparation, and social proof for job seekers.",
+      }),
     });
 
     const data = await res.json();
@@ -185,20 +188,23 @@ export default function CreatePostForm({
     setScheduledTime("");
     setVisualPrompt("");
     setVideoPrompt("");
-    setVisualStyle("Premium SaaS Ad");
+    setVisualStyle("ResumeVaultGod AI Career Brand");
     setMessage("Post created");
     await onCreated();
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow p-6">
-      <h2 className="text-xl font-bold text-gray-900">Create Post</h2>
+    <div className="rounded-2xl border border-white/5 bg-slate-900/50 p-6">
+      <h2 className="text-xl font-bold text-white">Create ResumeVaultGod Post</h2>
+      <p className="mt-1 text-sm text-slate-400">
+        Generate social content for ResumeVaultGod.com: resumes, ATS wins, interview prep, and career growth.
+      </p>
 
       <div className="mt-4 space-y-4">
         <div>
-          <label className="block text-sm font-semibold mb-1">Platform</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Platform</label>
           <select
-            className="w-full border border-gray-300 rounded-xl px-4 py-3"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3"
             value={platform}
             onChange={(e) => setPlatform(e.target.value)}
           >
@@ -212,22 +218,23 @@ export default function CreatePostForm({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Topic</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Topic</label>
           <input
-            className="w-full border border-gray-300 rounded-xl px-4 py-3"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            placeholder="Resume Tips"
+            placeholder="AI resume builder for job seekers"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Visual Style</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Visual Style</label>
           <select
-            className="w-full border border-gray-300 rounded-xl px-4 py-3"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3"
             value={visualStyle}
             onChange={(e) => setVisualStyle(e.target.value)}
           >
+            <option value="ResumeVaultGod AI Career Brand">ResumeVaultGod AI Career Brand</option>
             <option value="Premium SaaS Ad">Premium SaaS Ad</option>
             <option value="Professional Corporate">Professional Corporate</option>
             <option value="Modern Minimalist">Modern Minimalist</option>
@@ -239,7 +246,7 @@ export default function CreatePostForm({
           <button
             type="button"
             onClick={generateCaption}
-            className="bg-purple-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-purple-700 text-sm"
+            className="bg-violet-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-violet-700 text-sm"
           >
             {loadingCaption ? "Generating..." : "AI Caption"}
           </button>
@@ -267,9 +274,9 @@ export default function CreatePostForm({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Caption</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Caption</label>
           <textarea
-            className="w-full border border-gray-300 rounded-xl px-4 py-3 min-h-[140px]"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3 min-h-[140px]"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
             placeholder="Write your caption"
@@ -277,9 +284,9 @@ export default function CreatePostForm({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Image URL</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Image URL</label>
           <input
-            className="w-full border border-gray-300 rounded-xl px-4 py-3"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
             placeholder="https://..."
@@ -287,9 +294,9 @@ export default function CreatePostForm({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Visual Prompt</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Visual Prompt</label>
           <textarea
-            className="w-full border border-gray-300 rounded-xl px-4 py-3 min-h-[100px]"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3 min-h-[100px]"
             value={visualPrompt}
             onChange={(e) => setVisualPrompt(e.target.value)}
             placeholder="Photorealistic prompt for image generation"
@@ -297,9 +304,9 @@ export default function CreatePostForm({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Video Prompt</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Video Prompt</label>
           <textarea
-            className="w-full border border-gray-300 rounded-xl px-4 py-3 min-h-[100px]"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3 min-h-[100px]"
             value={videoPrompt}
             onChange={(e) => setVideoPrompt(e.target.value)}
             placeholder="Detailed video prompt for production"
@@ -307,9 +314,9 @@ export default function CreatePostForm({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Status</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Status</label>
           <select
-            className="w-full border border-gray-300 rounded-xl px-4 py-3"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
@@ -319,10 +326,10 @@ export default function CreatePostForm({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-1">Scheduled Time</label>
+          <label className="block text-sm font-semibold mb-1 text-slate-300">Scheduled Time</label>
           <input
             type="datetime-local"
-            className="w-full border border-gray-300 rounded-xl px-4 py-3"
+            className="w-full border border-white/10 bg-slate-950 text-white rounded-xl px-4 py-3"
             value={scheduledTime}
             onChange={(e) => setScheduledTime(e.target.value)}
           />
@@ -335,7 +342,9 @@ export default function CreatePostForm({
           Save Post
         </button>
 
-        {message ? <p className="text-sm text-gray-600">{message}</p> : null}
+        {imageUrl ? <img src={imageUrl} alt="Generated visual" className="rounded-xl border border-white/10" /> : null}
+
+        {message ? <p className="text-sm text-slate-400">{message}</p> : null}
       </div>
     </div>
   );

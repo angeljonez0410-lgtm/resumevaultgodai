@@ -26,12 +26,14 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     const brandVoice = settings?.brand_voice || "Professional, helpful, empowering";
-    const targetAudience = settings?.target_audience || "Job seekers";
+    const targetAudience = settings?.target_audience || "job seekers, career changers, and professionals who want better resumes";
     const postFrequency = settings?.post_frequency || "daily";
 
     const prompt = `
-Create a 30-day social media content calendar for ResumeVault.
+Create a 30-day social media content calendar for ResumeVaultGod.com.
 
+Website: https://resumevaultgod.com/
+Core offer: AI resume builder, ATS optimization, cover letters, interview prep, application tracking, and career-growth tools.
 Brand voice: ${brandVoice}
 Target audience: ${targetAudience}
 Posting frequency: ${postFrequency}
@@ -45,8 +47,9 @@ Each item must include:
 
 Rules:
 - platforms should rotate between instagram, linkedin, twitter, tiktok
-- content should help job seekers and career changers
+- content should help job seekers and career changers while pointing to ResumeVaultGod.com
 - captions should be engaging and concise
+- include CTAs that naturally reference ResumeVaultGod.com
 - output valid JSON only
 `;
 

@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getSupabasePublicConfig } from "./supabase-config";
 
 /**
  * Verifies the Bearer token from the request and returns the authenticated user.
  * Returns null if auth fails, or a { user, supabase } object on success.
  */
 export async function getAuthUser(req: NextRequest) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { url, anonKey } = getSupabasePublicConfig();
 
   if (!url || !anonKey) return null;
 

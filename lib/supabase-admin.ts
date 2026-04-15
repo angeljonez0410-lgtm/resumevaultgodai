@@ -1,11 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
+import { formatMissingSupabaseEnv, getSupabaseAdminConfig } from "./supabase-config";
 
 export function getSupabaseAdmin() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
+  const { url, serviceRoleKey, missing } = getSupabaseAdminConfig();
   if (!url || !serviceRoleKey) {
-    throw new Error("Missing Supabase admin environment variables");
+    throw new Error(formatMissingSupabaseEnv(missing));
   }
 
   return createClient(url, serviceRoleKey, {

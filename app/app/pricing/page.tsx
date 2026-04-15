@@ -43,10 +43,12 @@ function PricingContent() {
   const success = searchParams.get("success");
   const canceled = searchParams.get("canceled");
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const handleCheckout = async (stripePrice: string | null) => {
     if (!stripePrice) return;
     setLoadingPlan(stripePrice);
+    setCheckoutError(null);
     try {
       const res = await authFetch("/api/stripe/checkout", {
         method: "POST",
@@ -54,11 +56,23 @@ function PricingContent() {
         body: JSON.stringify({ priceId: stripePrice }),
       });
       const data = await res.json();
-      if (data.url) {
-        window.open(data.url, "_self");
+
+      if (!res.ok) {
+        setCheckoutError(data.error || "Unable to start checkout. Please try again.");
+        return;
       }
-    } catch { /* ignore */ }
-    setLoadingPlan(null);
+
+      if (data.url) {
+        window.location.assign(data.url);
+        return;
+      }
+
+      setCheckoutError("Stripe did not return a checkout URL. Please try again.");
+    } catch {
+      setCheckoutError("Unable to start checkout. Please check your connection and try again.");
+    } finally {
+      setLoadingPlan(null);
+    }
   };
 
   return (
@@ -72,6 +86,11 @@ function PricingContent() {
       {canceled && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 text-center">
           <p className="text-amber-800">Checkout was canceled. No charges were made.</p>
+        </div>
+      )}
+      {checkoutError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-center">
+          <p className="text-red-800">{checkoutError}</p>
         </div>
       )}
 

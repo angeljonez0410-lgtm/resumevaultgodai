@@ -18,9 +18,91 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   education JSONB DEFAULT '[]',
   saved_resume TEXT,
   saved_tailored_resume TEXT,
+  credits INTEGER NOT NULL DEFAULT 0 CHECK (credits >= 0),
+  stripe_customer_id TEXT,
+  role TEXT NOT NULL DEFAULT 'user',
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
 );
+
+ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS credits INTEGER NOT NULL DEFAULT 0 CHECK (credits >= 0);
+ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
+ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user';
+
+CREATE TABLE IF NOT EXISTS stripe_checkout_sessions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  session_id TEXT NOT NULL UNIQUE,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  credits INTEGER NOT NULL CHECK (credits > 0),
+  stripe_customer_id TEXT,
+  payment_status TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE OR REPLACE FUNCTION add_user_credits(
+  target_user_id UUID,
+  credits_to_add INTEGER,
+  stripe_customer TEXT DEFAULT NULL
+)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF credits_to_add <= 0 THEN
+    RAISE EXCEPTION 'credits_to_add must be positive';
+  END IF;
+
+  INSERT INTO user_profiles (user_id, credits, stripe_customer_id)
+  VALUES (target_user_id, credits_to_add, stripe_customer)
+  ON CONFLICT (user_id)
+  DO UPDATE SET
+    credits = user_profiles.credits + EXCLUDED.credits,
+    stripe_customer_id = COALESCE(EXCLUDED.stripe_customer_id, user_profiles.stripe_customer_id),
+    updated_at = now();
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION process_stripe_checkout_session(
+  checkout_session_id TEXT,
+  target_user_id UUID,
+  credits_to_add INTEGER,
+  stripe_customer TEXT DEFAULT NULL,
+  stripe_payment_status TEXT DEFAULT NULL
+)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF credits_to_add <= 0 THEN
+    RAISE EXCEPTION 'credits_to_add must be positive';
+  END IF;
+
+  INSERT INTO stripe_checkout_sessions (
+    session_id,
+    user_id,
+    credits,
+    stripe_customer_id,
+    payment_status
+  )
+  VALUES (
+    checkout_session_id,
+    target_user_id,
+    credits_to_add,
+    stripe_customer,
+    stripe_payment_status
+  );
+
+  PERFORM add_user_credits(target_user_id, credits_to_add, stripe_customer);
+  RETURN TRUE;
+EXCEPTION
+  WHEN unique_violation THEN
+    RETURN FALSE;
+END;
+$$;
 
 -- Job Applications
 CREATE TABLE IF NOT EXISTS job_applications (
@@ -64,6 +146,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 
 -- Enable RLS
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stripe_checkout_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE job_applications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE saved_resumes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
@@ -88,6 +171,8 @@ CREATE POLICY "Users can insert own reviews" ON reviews FOR INSERT WITH CHECK (a
 
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id ON user_profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_stripe_customer_id ON user_profiles(stripe_customer_id);
+CREATE INDEX IF NOT EXISTS idx_stripe_checkout_sessions_user_id ON stripe_checkout_sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_job_applications_user_id ON job_applications(user_id);
 CREATE INDEX IF NOT EXISTS idx_saved_resumes_user_id ON saved_resumes(user_id);
 CREATE INDEX IF NOT EXISTS idx_reviews_created_at ON reviews(created_at DESC);

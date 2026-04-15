@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { formatMissingSupabaseEnv, getSupabasePublicConfig } from "@/lib/supabase-config";
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,12 +16,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Magic link is only available for admin accounts." }, { status: 403 });
     }
 
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
+    const { url, anonKey, missing } = getSupabasePublicConfig();
     if (!url || !anonKey) {
       return NextResponse.json(
-        { error: "Server configuration error" },
+        { error: formatMissingSupabaseEnv(missing) },
         { status: 500 }
       );
     }

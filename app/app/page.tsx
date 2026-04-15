@@ -10,15 +10,8 @@ import {
   Send,
   Sparkles,
   Star,
-  Zap,
 } from "lucide-react";
-
-const stats = [
-  { label: "ATS Speed", value: "60s", detail: "job scan to strategy", icon: Zap },
-  { label: "Resume Vault", value: "∞", detail: "versions organized", icon: FileArchive },
-  { label: "Pipeline", value: "Live", detail: "applications tracked", icon: Briefcase },
-  { label: "AI Coach", value: "24/7", detail: "career support", icon: Sparkles },
-];
+import DashboardMetrics from "@/components/DashboardMetrics";
 
 const tools = [
   { href: "/app/auto-apply", label: "Auto Apply", text: "Generate targeted job packs and outreach angles.", icon: Send },
@@ -86,25 +79,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <div key={stat.label} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-sm font-semibold text-slate-500">{stat.label}</p>
-                  <p className="mt-1 text-3xl font-black text-[#1e2d42]">{stat.value}</p>
-                  <p className="mt-1 text-xs text-slate-500">{stat.detail}</p>
-                </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f4c542]/20 text-[#1e2d42]">
-                  <Icon className="h-5 w-5" />
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </section>
+      <DashboardMetrics />
 
       <section>
         <div className="mb-4 flex items-end justify-between gap-4">

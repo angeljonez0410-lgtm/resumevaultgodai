@@ -62,6 +62,35 @@ Output ONLY the cover letter text.`);
       return NextResponse.json({ letter });
     }
 
+    case "resume-builder": {
+      const resume = await invokeLLM(`Create an ATS-optimized resume draft.
+
+Target Role: ${params.jobTitle}
+Company: ${params.company || "Target company"}
+Job Description:
+${params.jobDescription}
+
+Candidate Profile:
+Name: ${params.fullName || "Candidate"}
+Current Role: ${params.currentRole || ""}
+Skills: ${params.skills || ""}
+Experience:
+${params.experience || ""}
+Achievements:
+${params.achievements || ""}
+
+Build a professional resume in markdown with:
+- Strong headline and summary
+- ATS keyword skills section
+- Experience bullets with measurable impact
+- Projects or highlights when useful
+- Missing keyword recommendations at the end
+
+Keep it concise, polished, and tailored to the job.`);
+
+      return NextResponse.json({ resume });
+    }
+
     case "follow-up-email": {
       const email = await invokeLLM(`Write a professional follow-up email.
 

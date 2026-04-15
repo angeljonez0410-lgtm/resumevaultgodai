@@ -1,61 +1,104 @@
-"use client";
-
 import Link from "next/link";
-import { Briefcase, FileText, Mail, Map, Mic, Plus, Star, TrendingUp, Zap } from "lucide-react";
+import {
+  BarChart3,
+  Briefcase,
+  ClipboardCheck,
+  FileArchive,
+  FileText,
+  Mail,
+  SearchCheck,
+  Send,
+  Sparkles,
+  Star,
+  Zap,
+} from "lucide-react";
 
 const stats = [
-  { title: "Applications", value: 0, subtitle: "Tracked roles", icon: Briefcase, glow: "bg-blue-500" },
-  { title: "Interviews", value: 0, subtitle: "In progress", icon: Mic, glow: "bg-emerald-500" },
-  { title: "Credits Used", value: 0, subtitle: "This month", icon: Zap, glow: "bg-cyan-500" },
-  { title: "Response Rate", value: "-", subtitle: "Job hunt signal", icon: TrendingUp, glow: "bg-amber-500" },
+  { label: "ATS Speed", value: "60s", detail: "job scan to strategy", icon: Zap },
+  { label: "Resume Vault", value: "∞", detail: "versions organized", icon: FileArchive },
+  { label: "Pipeline", value: "Live", detail: "applications tracked", icon: Briefcase },
+  { label: "AI Coach", value: "24/7", detail: "career support", icon: Sparkles },
 ];
 
-const actions = [
-  {
-    label: "Update Profile",
-    description: "Save your career details",
-    icon: FileText,
-    path: "/app/profile",
-    gradient: "from-blue-500 to-cyan-600",
-  },
-  {
-    label: "Track Application",
-    description: "Add a job opportunity",
-    icon: Briefcase,
-    path: "/app/application-tracker",
-    gradient: "from-emerald-500 to-teal-600",
-  },
-  {
-    label: "Practice Interview",
-    description: "Prepare stronger answers",
-    icon: Mic,
-    path: "/app/interview-coach",
-    gradient: "from-amber-500 to-orange-600",
-  },
+const tools = [
+  { href: "/app/auto-apply", label: "Auto Apply", text: "Generate targeted job packs and outreach angles.", icon: Send },
+  { href: "/app/job-analyzer", label: "Job Analyzer", text: "Extract ATS keywords and gaps from a role.", icon: SearchCheck },
+  { href: "/app/resume-builder", label: "Resume Builder", text: "Create a role-specific ATS resume draft.", icon: FileText },
+  { href: "/app/resume-library", label: "Resume Library", text: "Organize versions and winning resume assets.", icon: FileArchive },
+  { href: "/app/cover-letter", label: "Cover Letter", text: "Write a tailored letter with job-fit proof.", icon: ClipboardCheck },
+  { href: "/app/follow-up-email", label: "Follow-Up Email", text: "Send polished follow-ups at every stage.", icon: Mail },
+  { href: "/app/application-tracker", label: "Application Tracker", text: "Keep every opportunity and next step visible.", icon: Briefcase },
+  { href: "/app/analytics", label: "Analytics", text: "Track response rate, interviews, and offers.", icon: BarChart3 },
 ];
 
 export default function DashboardPage() {
   return (
-    <div className="mx-auto max-w-7xl px-5 py-6 sm:px-6 lg:px-10 lg:py-10">
-      <section className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-white">Studio</h1>
-        <p className="mt-1 text-sm text-slate-400">Manage your resume, job search, interviews, and next career move.</p>
+    <div className="space-y-8">
+      <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="grid gap-8 p-6 lg:grid-cols-[1.15fr_0.85fr] lg:p-8">
+          <div>
+            <p className="inline-flex rounded-full bg-[#fff5d6] px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#9a6b00]">
+              God-Mode Job Hunt
+            </p>
+            <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight text-[#1e2d42] sm:text-5xl">
+              ResumeVaultGodAI
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+              Beat the ATS in 60 seconds and run your full job hunt from one professional command center.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/app/job-analyzer"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#1e2d42] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#2a3f5f]"
+              >
+                <SearchCheck className="h-4 w-4 text-[#f4c542]" />
+                Analyze a Job
+              </Link>
+              <Link
+                href="/app/resume-builder"
+                className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-[#1e2d42] transition hover:bg-slate-50"
+              >
+                <FileText className="h-4 w-4" />
+                Build Resume
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-[#f4c542]/40 bg-[#fff9e8] p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#f4c542]">
+                <Star className="h-5 w-5 fill-[#1e2d42] text-[#1e2d42]" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-[#1e2d42]">Today&apos;s Sprint</p>
+                <p className="text-xs text-slate-600">Analyze, tailor, apply, follow up.</p>
+              </div>
+            </div>
+            <div className="mt-5 space-y-3">
+              {["Paste a job description", "Generate resume + cover letter", "Track the application", "Ask ARIA for interview prep"].map((item) => (
+                <div key={item} className="flex items-center gap-3 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                  <span className="h-2 w-2 rounded-full bg-[#f4c542]" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.title} className="relative overflow-hidden rounded-2xl border border-white/5 bg-slate-900/50 p-6 backdrop-blur-sm">
-              <div className={`absolute right-0 top-0 h-32 w-32 translate-x-8 -translate-y-8 rounded-full opacity-10 blur-2xl ${stat.glow}`} />
-              <div className="relative flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-slate-400">{stat.title}</p>
-                  <p className="mt-1 text-3xl font-bold tracking-tight text-white">{stat.value}</p>
-                  <p className="mt-1 text-xs text-slate-500">{stat.subtitle}</p>
+            <div key={stat.label} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold text-slate-500">{stat.label}</p>
+                  <p className="mt-1 text-3xl font-black text-[#1e2d42]">{stat.value}</p>
+                  <p className="mt-1 text-xs text-slate-500">{stat.detail}</p>
                 </div>
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${stat.glow}/20`}>
-                  <Icon className="h-5 w-5 text-white/80" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f4c542]/20 text-[#1e2d42]">
+                  <Icon className="h-5 w-5" />
                 </div>
               </div>
             </div>
@@ -63,50 +106,30 @@ export default function DashboardPage() {
         })}
       </section>
 
-      <section className="mb-10">
-        <h2 className="mb-4 text-lg font-semibold text-white">Quick Actions</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {actions.map((action) => {
-            const Icon = action.icon;
+      <section>
+        <div className="mb-4 flex items-end justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-black text-[#1e2d42]">Career Command Center</h2>
+            <p className="text-sm text-slate-500">Every page connects to the same profile, AI tools, tracker, and analytics flow.</p>
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {tools.map((tool) => {
+            const Icon = tool.icon;
             return (
               <Link
-                key={action.label}
-                href={action.path}
-                className="group relative block overflow-hidden rounded-2xl border border-white/5 bg-slate-900/50 p-5 transition-all duration-300 hover:border-white/10"
+                key={tool.href}
+                href={tool.href}
+                className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#f4c542] hover:shadow-md"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${action.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-5`} />
-                <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${action.gradient}`}>
-                  <Icon className="h-5 w-5 text-white" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#1e2d42] text-[#f4c542]">
+                  <Icon className="h-5 w-5" />
                 </div>
-                <p className="text-sm font-semibold text-white">{action.label}</p>
-                <p className="mt-0.5 text-xs text-slate-500">{action.description}</p>
-                <Plus className="absolute right-4 top-4 h-4 w-4 text-slate-600 transition-colors group-hover:text-slate-400" />
+                <h3 className="mt-4 font-bold text-[#1e2d42]">{tool.label}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{tool.text}</p>
               </Link>
             );
           })}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="mb-4 text-lg font-semibold text-white">Career Toolkit</h2>
-        <div className="rounded-2xl border border-white/5 bg-slate-900/50 p-8 text-center">
-          <Star className="mx-auto mb-3 h-10 w-10 text-slate-600" />
-          <p className="text-sm text-slate-400">Start with your profile, then use AI tools to move faster.</p>
-          <p className="mt-1 text-xs text-slate-500">ResumeVaultGodAI keeps the whole job search in one place.</p>
-          <Link
-            href="/app/career-roadmap"
-            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm font-semibold text-violet-300 transition hover:bg-violet-500/15"
-          >
-            <Map className="h-4 w-4" />
-            Build a roadmap
-          </Link>
-          <Link
-            href="/app/follow-up-email"
-            className="ml-3 mt-5 inline-flex items-center gap-2 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-500/15"
-          >
-            <Mail className="h-4 w-4" />
-            Write follow-up
-          </Link>
         </div>
       </section>
     </div>

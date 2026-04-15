@@ -39,7 +39,7 @@ button {
 }
 
 .card {
-  @apply rounded-2xl border border-white/5 bg-slate-900/50 shadow-sm;
+  @apply rounded-xl border border-slate-200 bg-white shadow-sm;
 }
 
 .btn {
@@ -47,8 +47,9 @@ button {
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold text-white transition;
-  background: var(--brand);
+  @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-semibold transition;
+  background: #1e2d42;
+  color: #ffffff;
 }
 
 .btn-secondary {

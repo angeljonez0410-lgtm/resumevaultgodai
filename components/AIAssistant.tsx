@@ -27,13 +27,18 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
     setGreeted(true);
     const hour = new Date().getHours();
     const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-    const user = localStorage.getItem("sb_user");
-    const name = user ? JSON.parse(user).email?.split("@")[0] : "there";
+    let name = "there";
+    try {
+      const user = localStorage.getItem("sb_user");
+      name = user ? JSON.parse(user).email?.split("@")[0] || "there" : "there";
+    } catch {
+      name = "there";
+    }
 
     setMessages([
       {
         role: "assistant",
-        content: `${greeting}, ${name}! I'm ARIA, your ResumeVaultGodAI career assistant.\n\nI can help with resumes, job search strategy, interview prep, follow-up emails, portfolios, and career planning.\n\nWhat are we working on today?`,
+        content: `${greeting}, ${name}. I'm ARIA, your ResumeVaultGodAI career assistant.\n\nI can help with ATS keywords, resumes, cover letters, follow-up emails, applications, interviews, and job-search strategy.\n\nWhat are we working on today?`,
       },
     ]);
   }, [isOpen, greeted]);
@@ -56,6 +61,13 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
         }),
       });
       const data = await res.json();
+      if (!res.ok) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.error || "ARIA could not connect. Please sign in and try again." },
+        ]);
+        return;
+      }
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: data.reply || "Sorry, I couldn't process that. Try again." },
@@ -74,7 +86,7 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white shadow-xl transition hover:scale-105 hover:shadow-2xl"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#1e2d42] text-[#f4c542] shadow-xl ring-4 ring-[#f4c542]/20 transition hover:scale-105 hover:shadow-2xl"
         title="ARIA AI"
       >
         <MessageCircle className="h-6 w-6" />
@@ -83,15 +95,15 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex h-[520px] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-950 shadow-2xl">
-      <div className="flex shrink-0 items-center justify-between border-b border-white/5 bg-slate-900 px-4 py-3 text-white">
+    <div className="fixed bottom-6 right-6 z-50 flex h-[520px] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl">
+      <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-[#1e2d42] px-4 py-3 text-white">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500">
-            <Sparkles className="h-5 w-5 text-white" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f4c542]">
+            <Sparkles className="h-5 w-5 text-[#1e2d42]" />
           </div>
           <div>
             <h3 className="text-sm font-bold">ARIA AI</h3>
-            <p className="text-xs text-slate-400">Career co-pilot</p>
+            <p className="text-xs text-slate-300">God-Mode career co-pilot</p>
           </div>
         </div>
         <button onClick={() => setIsOpen(false)} className="text-white/70 transition hover:text-white">
@@ -99,14 +111,14 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
         </button>
       </div>
 
-      <div className="flex-1 space-y-3 overflow-y-auto bg-slate-950 p-4">
+      <div className="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4">
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
               className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                 msg.role === "user"
-                  ? "rounded-br-sm bg-violet-600 text-white"
-                  : "rounded-bl-sm border border-white/5 bg-slate-900 text-slate-100"
+                  ? "rounded-br-sm bg-[#1e2d42] text-white"
+                  : "rounded-bl-sm border border-slate-200 bg-white text-slate-800"
               }`}
             >
               {msg.content}
@@ -115,7 +127,7 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
         ))}
         {loading ? (
           <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-sm border border-white/5 bg-slate-900 px-4 py-2.5 text-sm text-slate-400">
+            <div className="rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-500">
               Thinking...
             </div>
           </div>
@@ -123,7 +135,7 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
         <div ref={endRef} />
       </div>
 
-      <div className="shrink-0 border-t border-white/5 bg-slate-900 p-3">
+      <div className="shrink-0 border-t border-slate-200 bg-white p-3">
         <div className="flex gap-2">
           <input
             type="text"
@@ -133,13 +145,13 @@ export default function AIAssistant({ defaultOpen = false }: { defaultOpen?: boo
               if (event.key === "Enter" && !event.shiftKey) void sendMessage();
             }}
             placeholder="Ask ARIA about resumes, interviews, or jobs..."
-            className="flex-1 rounded-xl border border-white/10 bg-slate-950 px-3 py-2.5 text-sm text-white outline-none placeholder:text-slate-600 focus:border-violet-500/50"
+            className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-[#f4c542] focus:ring-2 focus:ring-[#f4c542]/25"
             disabled={loading}
           />
           <button
             onClick={sendMessage}
             disabled={loading || !input.trim()}
-            className="rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 px-3 py-2.5 text-white transition hover:from-violet-500 hover:to-fuchsia-500 disabled:opacity-40"
+            className="rounded-lg bg-[#f4c542] px-3 py-2.5 text-[#1e2d42] transition hover:bg-[#e0b02f] disabled:opacity-40"
           >
             <Send className="h-4 w-4" />
           </button>

@@ -1,5 +1,5 @@
 import LiveSiteShell from "@/components/LiveSiteShell";
 
-export default function HomePage() {
+export default function LiveSiteRoutePage() {
   return <LiveSiteShell />;
 }

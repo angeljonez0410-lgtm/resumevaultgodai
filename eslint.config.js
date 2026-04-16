@@ -6,15 +6,6 @@ import pluginUnusedImports from "eslint-plugin-unused-imports";
 
 export default [
   {
-    ignores: [
-      ".next/**",
-      "out/**",
-      "build/**",
-      "node_modules/**",
-      "next-env.d.ts",
-    ],
-  },
-  {
     files: [
       "src/components/**/*.{js,mjs,cjs,jsx}",
       "src/pages/**/*.{js,mjs,cjs,jsx}",

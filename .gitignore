@@ -1,10 +1,9 @@
 #env
 .env
 .env.*
-!.env.example
 
 # Logs
-/logs
+logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -29,19 +28,3 @@ dist-ssr
 *.sw?
 
 .env
-# Next.js
-.next/
-
-# Vercel
-.vercel/
-
-# Legacy Base44/Vite build artifacts / local tooling
-.deploy-vibe-clip-lab/
-base44/
-deploy-vibe-clip-lab/
-deploy-vibe-clip-lab/.vercel/
-index.html
-vite.config.js
-vite-src/
-
-.env*.local

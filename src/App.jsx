@@ -1,11 +1,24 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
+import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-// Add page imports here
+import StripeProductImporter from './pages/StripeProductImporter';
+import Billing from './pages/Billing';
+import JobTracker from './pages/JobTracker';
+import AdminUsers from './pages/AdminUsers';
+import AdminAssistant from './pages/AdminAssistant';
+
+const { Pages, Layout, mainPage } = pagesConfig;
+const mainPageKey = mainPage ?? Object.keys(Pages)[0];
+const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
+
+const LayoutWrapper = ({ children, currentPageName }) => Layout ?
+  <Layout currentPageName={currentPageName}>{children}</Layout>
+  : <>{children}</>;
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -33,7 +46,62 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
+      <Route path="/" element={
+        <LayoutWrapper currentPageName={mainPageKey}>
+          <MainPage />
+        </LayoutWrapper>
+      } />
+      {Object.entries(Pages).map(([path, Page]) => (
+        <Route
+          key={path}
+          path={`/${path}`}
+          element={
+            <LayoutWrapper currentPageName={path}>
+              <Page />
+            </LayoutWrapper>
+          }
+        />
+      ))}
+      <Route
+        path="/StripeProductImporter"
+        element={
+          <LayoutWrapper currentPageName="StripeProductImporter">
+            <StripeProductImporter />
+          </LayoutWrapper>
+        }
+      />
+      <Route
+        path="/Billing"
+        element={
+          <LayoutWrapper currentPageName="Billing">
+            <Billing />
+          </LayoutWrapper>
+        }
+      />
+      <Route
+        path="/JobTracker"
+        element={
+          <LayoutWrapper currentPageName="JobTracker">
+            <JobTracker />
+          </LayoutWrapper>
+        }
+      />
+      <Route
+        path="/AdminUsers"
+        element={
+          <LayoutWrapper currentPageName="AdminUsers">
+            <AdminUsers />
+          </LayoutWrapper>
+        }
+      />
+      <Route
+        path="/AdminAssistant"
+        element={
+          <LayoutWrapper currentPageName="AdminAssistant">
+            <AdminAssistant />
+          </LayoutWrapper>
+        }
+      />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

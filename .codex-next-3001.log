@@ -1,0 +1,43 @@
+
+> base44-app@0.0.0 dev
+> next dev -p 3001
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3001
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 4.5s
+ ○ Compiling /login ...
+ ✓ Compiled /login in 10.9s (494 modules)
+ HEAD / 307 in 11237ms
+ GET / 307 in 10999ms
+ HEAD /login 307 in 11184ms
+ GET /login 307 in 11046ms
+ ○ Compiling /app ...
+ ✓ Compiled /app in 1552ms (684 modules)
+ GET /app 200 in 1774ms
+ GET /app 200 in 1785ms
+   Reload env: .env.local
+ ✓ Compiled in 3.1s (339 modules)
+   Reload env: .env.local
+ ✓ Compiled in 5.1s (348 modules)
+ ✓ Compiled in 607ms (339 modules)
+ ✓ Compiled in 633ms (339 modules)
+ ✓ Compiled in 385ms (339 modules)
+ ✓ Compiled in 537ms (339 modules)
+ ✓ Compiled in 407ms (339 modules)
+ ✓ Compiled in 680ms (339 modules)
+   Reload env: .env.local
+ ✓ Compiled in 3s (339 modules)
+   Reload env: .env.local
+ ✓ Compiled in 2.6s (339 modules)
+ ✓ Compiled in 2.9s (217 modules)
+ ✓ Compiled in 309ms (217 modules)
+ ✓ Compiled in 2.7s (217 modules)
+ ✓ Compiled in 10.7s (217 modules)
+ ✓ Compiled in 1684ms (217 modules)
+ ✓ Compiled in 1454ms (217 modules)
+ ✓ Compiled in 1510ms (217 modules)
+ ✓ Compiled in 996ms (217 modules)
+ ✓ Compiled in 441ms (217 modules)

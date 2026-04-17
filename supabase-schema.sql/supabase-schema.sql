@@ -2,11 +2,20 @@ create extension if not exists "pgcrypto";
 
 create table if not exists social_posts (
   id uuid primary key default gen_random_uuid(),
+<<<<<<< HEAD
   platform text not null check (platform in ('instagram', 'twitter', 'linkedin', 'tiktok', 'reddit', 'threads')),
+=======
+  platform text not null check (platform in ('instagram', 'facebook', 'twitter', 'linkedin', 'tiktok', 'reddit', 'threads', 'youtube', 'pinterest')),
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
   topic text not null,
   prompt text,
   caption text,
   image_url text,
+<<<<<<< HEAD
+=======
+  media_url text,
+  tiktok_privacy_level text,
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
   status text not null default 'draft' check (status in ('draft', 'scheduled', 'posted', 'failed')),
   scheduled_time timestamptz,
   created_at timestamptz not null default now(),
@@ -34,6 +43,27 @@ create table if not exists social_settings (
   updated_at timestamptz not null default now()
 );
 
+<<<<<<< HEAD
+=======
+create table if not exists social_accounts (
+  id uuid primary key default gen_random_uuid(),
+  provider text not null check (provider in ('instagram', 'facebook', 'twitter', 'linkedin', 'tiktok', 'threads', 'youtube', 'pinterest', 'reddit')),
+  account_name text not null,
+  handle text,
+  auth_mode text not null default 'token' check (auth_mode in ('token', 'oauth', 'manual')),
+  status text not null default 'pending' check (status in ('connected', 'pending', 'expired', 'disconnected')),
+  access_token text,
+  refresh_token text,
+  token_expires_at timestamptz,
+  scopes jsonb default '[]'::jsonb,
+  metadata jsonb default '{}'::jsonb,
+  connected_at timestamptz default now(),
+  last_validated_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 create table if not exists social_logs (
   id uuid primary key default gen_random_uuid(),
   action text not null,
@@ -84,6 +114,11 @@ create table if not exists embed_tokens (
 create index if not exists idx_social_posts_status on social_posts(status);
 create index if not exists idx_social_posts_scheduled_time on social_posts(scheduled_time);
 create index if not exists idx_social_logs_created_at on social_logs(created_at desc);
+<<<<<<< HEAD
+=======
+create index if not exists idx_social_accounts_provider on social_accounts(provider);
+create index if not exists idx_social_accounts_status on social_accounts(status);
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 create index if not exists idx_social_analytics_platform_date on social_analytics(platform, metric_date desc);
 create index if not exists idx_social_posts_priority on social_posts(priority asc, scheduled_time asc);
 create index if not exists idx_social_posts_approval on social_posts(approval_status, approval_required);
@@ -99,4 +134,8 @@ create table if not exists social_activity_log (
 );
 
 create index if not exists idx_activity_log_created_at on social_activity_log(created_at desc);
+<<<<<<< HEAD
 create index if not exists idx_activity_log_platform on social_activity_log(platform);
+=======
+create index if not exists idx_activity_log_platform on social_activity_log(platform);
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)

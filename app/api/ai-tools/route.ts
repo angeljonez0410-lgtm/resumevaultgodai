@@ -5,7 +5,7 @@ import { invokeLLM, invokeLLMPremium } from "@/lib/ai";
 export async function POST(req: NextRequest) {
   const auth = await getAuthUser(req);
   if (!auth) return unauthorized();
-
+  // ...rest of the file unchanged...
   const { action, ...params } = await req.json();
 
   try {

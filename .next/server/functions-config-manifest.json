@@ -1,0 +1,1 @@
+{"version":1,"functions":{"/api/generate-image":{"maxDuration":60},"/api/generate-video":{"maxDuration":30},"/api/code-bridge/apply":{}}}

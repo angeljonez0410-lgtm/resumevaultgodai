@@ -8,6 +8,7 @@ function getOpenAI() {
     apiKey: process.env.OPENAI_API_KEY,
   });
 }
+// ...rest of the file unchanged...
 
 // Handle AI actions like creating posts, updating settings
 async function handleAction(action: Record<string, string>) {
@@ -72,15 +73,27 @@ async function handleAction(action: Record<string, string>) {
 }
 
 export async function POST(req: NextRequest) {
+<<<<<<< HEAD
   if (!(await getAuthUser(req))) return unauthorized();
   try {
     const openai = getOpenAI();
+=======
+  try {
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
     const { message, history, userName } = await req.json();
 
     if (!message || typeof message !== "string") {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
     }
 
+<<<<<<< HEAD
+=======
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 });
+    }
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
     const supabase = getSupabaseAdmin();
     const { data: settings } = await supabase
       .from("social_settings")
@@ -127,6 +140,10 @@ YOUR CAPABILITIES — You can take real actions by including a JSON action block
 When the user asks you to do something, DO IT by including an action block like this in your response:
 
 [ACTION: {"type": "create_post", "platform": "instagram", "topic": "Resume Tips", "caption": "Your caption here...", "status": "draft"}]
+<<<<<<< HEAD
+=======
+[ACTION: {"type": "create_post", "platform": "facebook", "topic": "Resume Tips", "caption": "Your caption here...", "status": "draft"}]
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 [ACTION: {"type": "create_post", "platform": "twitter", "topic": "Career Advice", "caption": "Tweet text", "status": "scheduled", "scheduled_time": "2026-04-10T14:00:00Z"}]
 [ACTION: {"type": "update_settings", "post_frequency": "3x daily", "brand_voice": "New voice", "target_audience": "New audience"}]
 [ACTION: {"type": "delete_post", "post_id": "uuid-here"}]
@@ -140,7 +157,11 @@ RULES:
 - You can include multiple actions in one response.
 - Always explain what you did after taking an action.
 - For scheduled posts, use ISO 8601 datetime format.
+<<<<<<< HEAD
 - Platforms: instagram, twitter, linkedin, tiktok, reddit, threads
+=======
+- Platforms: instagram, facebook, twitter, linkedin, youtube, pinterest, tiktok, reddit, threads
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 - Statuses: draft, scheduled, posted, failed`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [

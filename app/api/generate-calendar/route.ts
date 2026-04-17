@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getSupabaseAdmin } from "../../../lib/supabase-admin";
+<<<<<<< HEAD
 import { getAuthUser, unauthorized } from "../../../lib/auth";
 
 function getOpenAI() {
@@ -8,6 +9,8 @@ function getOpenAI() {
     apiKey: process.env.OPENAI_API_KEY,
   });
 }
+=======
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 
 function addDays(base: Date, days: number) {
   const copy = new Date(base);
@@ -16,9 +19,18 @@ function addDays(base: Date, days: number) {
 }
 
 export async function POST(req: NextRequest) {
+<<<<<<< HEAD
   if (!(await getAuthUser(req))) return unauthorized();
   try {
     const openai = getOpenAI();
+=======
+  try {
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 });
+    }
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
     const supabase = getSupabaseAdmin();
 
     const { data: settings } = await supabase
@@ -29,12 +41,23 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     const brandVoice = settings?.brand_voice || "Professional, helpful, empowering";
+<<<<<<< HEAD
     const targetAudience = settings?.target_audience || "Job seekers";
     const postFrequency = settings?.post_frequency || "daily";
 
     const prompt = `
 Create a 30-day social media content calendar for ResumeVault.
 
+=======
+    const targetAudience = settings?.target_audience || "job seekers, career changers, and professionals who want better resumes";
+    const postFrequency = settings?.post_frequency || "daily";
+
+    const prompt = `
+Create a 30-day social media content calendar for ResumeVaultGod.com.
+
+Website: https://resumevaultgod.com/
+Core offer: AI resume builder, ATS optimization, cover letters, interview prep, application tracking, and career-growth tools.
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 Brand voice: ${brandVoice}
 Target audience: ${targetAudience}
 Posting frequency: ${postFrequency}
@@ -47,9 +70,16 @@ Each item must include:
 - caption
 
 Rules:
+<<<<<<< HEAD
 - platforms should rotate between instagram, linkedin, twitter, tiktok
 - content should help job seekers and career changers
 - captions should be engaging and concise
+=======
+- platforms should rotate between instagram, facebook, linkedin, twitter, youtube, pinterest, tiktok, threads, reddit
+- content should help job seekers and career changers while pointing to ResumeVaultGod.com
+- captions should be engaging and concise
+- include CTAs that naturally reference ResumeVaultGod.com
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 - output valid JSON only
 `;
 

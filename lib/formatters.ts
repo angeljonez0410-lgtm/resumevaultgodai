@@ -13,6 +13,19 @@ Save this for later and follow ResumeVault for more career growth content.
 #ResumeTips #JobSearch #CareerGrowth #ResumeVault #InterviewTips #LinkedInTips`;
 }
 
+<<<<<<< HEAD
+=======
+export function formatFacebookCaption({ topic, caption }: FormatInput) {
+  const base = caption?.trim() || topic;
+
+  return `${base}
+
+Save this if you're actively building your next career move.
+
+#ResumeTips #JobSearch #CareerGrowth #ResumeVault`;
+}
+
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 export function formatTwitterCaption({ topic, caption }: FormatInput) {
   const base = caption?.trim() || topic;
   const shortBase = base.length > 220 ? `${base.slice(0, 220)}...` : base;
@@ -51,6 +64,11 @@ export function formatCaptionForPlatform(post: {
   switch (post.platform) {
     case "instagram":
       return formatInstagramCaption(post);
+<<<<<<< HEAD
+=======
+    case "facebook":
+      return formatFacebookCaption(post);
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
     case "twitter":
       return formatTwitterCaption(post);
     case "linkedin":
@@ -63,4 +81,8 @@ export function formatCaptionForPlatform(post: {
     default:
       return post.caption?.trim() || post.topic;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getSupabaseAdmin } from "../../../lib/supabase-admin";
+<<<<<<< HEAD
 import { getAuthUser, unauthorized } from "../../../lib/auth";
 
 function getOpenAI() {
@@ -13,6 +14,11 @@ export async function POST(req: NextRequest) {
   if (!(await getAuthUser(req))) return unauthorized();
   try {
     const openai = getOpenAI();
+=======
+
+export async function POST(req: NextRequest) {
+  try {
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
     const body = await req.json();
     const { topic, visualStyle } = body;
 
@@ -20,6 +26,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Topic is required" }, { status: 400 });
     }
 
+<<<<<<< HEAD
+=======
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 });
+    }
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
     const supabase = getSupabaseAdmin();
 
     const { data: settings } = await supabase
@@ -30,16 +44,29 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     const brandVoice = settings?.brand_voice || "Professional, empowering, premium";
+<<<<<<< HEAD
     const targetAudience = settings?.target_audience || "Job seekers and professionals";
+=======
+    const targetAudience = settings?.target_audience || "job seekers, career changers, and ambitious professionals";
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 
     const prompt = `
 You are a premium video ad creative strategist.
 
+<<<<<<< HEAD
 Generate one photorealistic short-form vertical video prompt for ResumeVault.
 
 Brand: ResumeVault
 Topic: ${topic}
 Visual style preset: ${visualStyle || "Premium SaaS Ad"}
+=======
+Generate one photorealistic short-form vertical video prompt for ResumeVaultGod.com.
+
+Brand: ResumeVaultGod.com
+Website: https://resumevaultgod.com/
+Topic: ${topic}
+Visual style preset: ${visualStyle || "ResumeVaultGod AI Career Brand"}
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 Brand voice: ${brandVoice}
 Target audience: ${targetAudience}
 
@@ -62,6 +89,11 @@ The concept should include:
 - lighting
 - product/app usage moment if relevant
 - ending CTA visual
+<<<<<<< HEAD
+=======
+- clear tie-in to AI resumes, ATS optimization, interview prep, cover letters, or application tracking
+- CTA to visit ResumeVaultGod.com
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
 
 Output in this exact format:
 

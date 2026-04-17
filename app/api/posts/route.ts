@@ -31,6 +31,11 @@ export async function POST(req: NextRequest) {
       topic,
       caption,
       image_url,
+<<<<<<< HEAD
+=======
+      media_url,
+      tiktok_privacy_level,
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
       status,
       scheduled_time,
       visual_prompt,
@@ -54,6 +59,11 @@ export async function POST(req: NextRequest) {
         topic,
         caption: caption || null,
         image_url: image_url || null,
+<<<<<<< HEAD
+=======
+        media_url: media_url || null,
+        tiktok_privacy_level: tiktok_privacy_level || null,
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
         status: status || "draft",
         scheduled_time: scheduled_time || null,
         visual_prompt: visual_prompt || null,

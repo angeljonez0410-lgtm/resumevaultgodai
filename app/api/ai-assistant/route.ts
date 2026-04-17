@@ -5,7 +5,6 @@ import OpenAI from "openai";
 function getOpenAI() {
   return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 }
-
 const SYSTEM_PROMPT = `You are the ResumeVault GodAI Assistant — an expert career coach, resume consultant, and job search strategist.
 
 Your personality: Professional yet friendly, encouraging, and knowledgeable. You give actionable advice.
@@ -43,15 +42,21 @@ Rules:
 
 export async function POST(req: NextRequest) {
   if (!(await getAuthUser(req))) return unauthorized();
-
   try {
     const openai = getOpenAI();
     const { message, history } = await req.json();
-
     if (!message || typeof message !== "string") {
       return NextResponse.json({ error: "Message required" }, { status: 400 });
     }
 
+<<<<<<< HEAD
+=======
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 500 });
+    }
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+>>>>>>> 69ab86b (Save all local changes and resolve conflicts)
     const chatHistory = (history || []).map((m: { role: string; content: string }) => ({
       role: m.role as "user" | "assistant",
       content: m.content,
